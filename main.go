@@ -5,12 +5,11 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
 	"time"
 
-	"github.com/fvumbaca/journal/pkg/fs"
+	"github.com/fvumbaca/journal/pkg/notes"
 	bf "github.com/russross/blackfriday/v2"
 	"github.com/spf13/cobra"
 )
@@ -50,6 +49,7 @@ func newRootCMD() *cobra.Command {
 
 	cmd.AddCommand(newOpenCMD())
 	cmd.AddCommand(newMemoCMD())
+	cmd.AddCommand(newViewCMD())
 	return &cmd
 }
 
@@ -64,8 +64,8 @@ func newOpenCMD() *cobra.Command {
 
 			day := time.Now().AddDate(0, 0, offset)
 
-			filename := fs.DayFilename(baseDir, day)
-			err := editNote(editor, filename)
+			filename := notes.DayFilename(baseDir, day)
+			err := notes.EditNote(editor, filename)
 			if err != nil {
 				fatal(err)
 			}
@@ -77,27 +77,13 @@ func newOpenCMD() *cobra.Command {
 	return &cmd
 }
 
-func editNote(editor, filename string) error {
-	err := os.MkdirAll(filepath.Dir(filename), 0775)
-	if err != nil {
-		return err
-	}
-
-	fmt.Println("Please make your entry in the opened browser")
-
-	editCmd := strings.Split(editor, " ")
-	editCmd = append(editCmd, filename)
-	c := exec.Command(editCmd[0], editCmd[1:]...)
-	return c.Run()
-}
-
 func newMemoCMD() *cobra.Command {
 	cmd := cobra.Command{
 		Use:     "memo",
 		Aliases: []string{"m"},
 		Run: func(cmd *cobra.Command, argv []string) {
 			now := time.Now()
-			filename := fs.DayFilename(baseDir, now)
+			filename := notes.DayFilename(baseDir, now)
 
 			err := os.MkdirAll(filepath.Dir(filename), 0775)
 			if err != nil {
@@ -111,14 +97,9 @@ func newMemoCMD() *cobra.Command {
 			defer f.Close()
 
 			if len(argv) == 0 {
-				fmt.Fprintf(f, "\n**%s** ", now.Format("03:04 PM"))
-				_, err = io.Copy(f, os.Stdin)
-				if err != nil {
-					fatal(err)
-				}
-				_, err = fmt.Fprintln(f)
+				err = notes.AppendMemo(f, now, os.Stdin)
 			} else {
-				_, err = fmt.Fprintf(f, "\n**%s** %s\n", now.Format("03:04 PM"), strings.Join(argv, " "))
+				err = notes.AppendMemo(f, now, strings.NewReader(strings.Join(argv, " ")))
 			}
 			if err != nil {
 				fatal(err)
@@ -126,6 +107,29 @@ func newMemoCMD() *cobra.Command {
 		},
 	}
 
+	return &cmd
+}
+
+func newViewCMD() *cobra.Command {
+	cmd := cobra.Command{
+		Use:     "view",
+		Aliases: []string{"v"},
+		Run: func(cmd *cobra.Command, args []string) {
+			now := time.Now()
+			filename := notes.DayFilename(baseDir, now)
+
+			f, err := os.Open(filename)
+			if err != nil {
+				fatal(err)
+			}
+			defer f.Close()
+
+			_, err = io.Copy(os.Stdout, f)
+			if err != nil {
+				fatal(err)
+			}
+		},
+	}
 	return &cmd
 }
 

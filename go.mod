@@ -3,6 +3,7 @@ module github.com/fvumbaca/journal
 go 1.13
 
 require (
+	github.com/google/go-cmp v0.5.5 // indirect
 	github.com/onsi/ginkgo v1.16.0 // indirect
 	github.com/onsi/gomega v1.11.0 // indirect
 	github.com/russross/blackfriday v2.0.0+incompatible // indirect
