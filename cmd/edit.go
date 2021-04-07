@@ -9,10 +9,11 @@ import (
 )
 
 var editCMD = &cobra.Command{
-	Use:   "edit",
-	Short: "Edit a journal page.",
-	Long:  "Edit a journal page. When run with no arguments or flags, this command will open the current day's page in the set editor.",
-	Args:  cobra.NoArgs,
+	Use:     "edit",
+	Short:   "Edit a journal page.",
+	Long:    "Edit a journal page. When run with no arguments or flags, this command will open the current day's page in the set editor.",
+	Aliases: []string{"e"},
+	Args:    cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		monthOffset, _ := cmd.Flags().GetInt("month-offset")
 		dayOffset, _ := cmd.Flags().GetInt("day-offset")

@@ -11,9 +11,10 @@ import (
 )
 
 var viewCMD = &cobra.Command{
-	Use:   "view",
-	Short: "Read journal pages.",
-	Long:  "Read journal pages. With no arguments, this command will only print the current day's page.",
+	Use:     "view",
+	Short:   "Read journal pages.",
+	Long:    "Read journal pages. With no arguments, this command will only print the current day's page.",
+	Aliases: []string{"v"},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		monthOffset, _ := cmd.Flags().GetInt("month-offset")
 		dayOffset, _ := cmd.Flags().GetInt("day-offset")

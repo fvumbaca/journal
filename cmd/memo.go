@@ -12,9 +12,10 @@ import (
 )
 
 var memoCMD = &cobra.Command{
-	Use:   "memo [message...]",
-	Short: "Add a memo to a journal page with a timestamp",
-	Long:  "Add a memo note to a journal page with a timestamp. Note that when this command is run with no arguments, it will read from stdin.",
+	Use:     "memo [message...]",
+	Short:   "Add a memo to a journal page with a timestamp",
+	Long:    "Add a memo note to a journal page with a timestamp. Note that when this command is run with no arguments, it will read from stdin.",
+	Aliases: []string{"m"},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		monthOffset, _ := cmd.Flags().GetInt("month-offset")
 		dayOffset, _ := cmd.Flags().GetInt("day-offset")
