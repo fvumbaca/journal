@@ -13,6 +13,8 @@ builds:
       - linux
       # - windows # We use $HOME for some default paths atm...
       - darwin
+  - ldflags:
+    - "-X cmd.version={{ .Tag }}"
 archives:
   - replacements:
       darwin: Darwin
