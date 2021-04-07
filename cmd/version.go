@@ -12,6 +12,7 @@ var versionCMD = &cobra.Command{
 	Short: "Print version info",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Version:", version.Version)
+		fmt.Println("SHA:", version.SHA)
 	},
 }
 
