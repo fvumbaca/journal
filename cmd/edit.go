@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/fvumbaca/journal/pkg/notes"
+	"github.com/fvumbaca/journal/pkg/search"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -27,7 +28,7 @@ var editCMD = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		return nil
+		return search.IndexFile(dir, filename)
 	},
 }
 

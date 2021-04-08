@@ -18,7 +18,7 @@ var viewCMD = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		monthOffset, _ := cmd.Flags().GetInt("month-offset")
 		dayOffset, _ := cmd.Flags().GetInt("day-offset")
-		dir := viper.GetString("journal-path")
+		dir := viper.GetString("journalPath")
 
 		day := time.Now().AddDate(0, monthOffset, dayOffset)
 		filename := notes.DayFilename(dir, day)

@@ -3,6 +3,7 @@ module github.com/fvumbaca/journal
 go 1.16
 
 require (
+	github.com/blevesearch/bleve v1.0.14 // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/google/go-cmp v0.5.5
 	github.com/spf13/cobra v1.1.3
