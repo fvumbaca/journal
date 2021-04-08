@@ -11,17 +11,24 @@ import (
 )
 
 var viewCMD = &cobra.Command{
-	Use:     "view",
+	Use:     "view [archive_filename]",
 	Short:   "Read journal pages.",
 	Long:    "Read journal pages. With no arguments, this command will only print the current day's page.",
+	Args:    cobra.MaximumNArgs(1),
 	Aliases: []string{"v"},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		monthOffset, _ := cmd.Flags().GetInt("month-offset")
 		dayOffset, _ := cmd.Flags().GetInt("day-offset")
 		dir := viper.GetString("journalPath")
 
-		day := time.Now().AddDate(0, monthOffset, dayOffset)
-		filename := notes.DayFilename(dir, day)
+		var filename string
+
+		if len(args) == 1 {
+			filename = notes.ArchiveFilename(dir, args[0])
+		} else {
+			day := time.Now().AddDate(0, monthOffset, dayOffset)
+			filename = notes.DayFilename(dir, day)
+		}
 
 		f, err := os.Open(filename)
 		if err != nil {

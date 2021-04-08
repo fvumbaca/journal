@@ -10,20 +10,30 @@ import (
 )
 
 var editCMD = &cobra.Command{
-	Use:     "edit",
+	Use:     "edit [archive_filename]",
 	Short:   "Edit a journal page.",
 	Long:    "Edit a journal page. When run with no arguments or flags, this command will open the current day's page in the set editor.",
 	Aliases: []string{"e"},
-	Args:    cobra.NoArgs,
+	Args:    cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		monthOffset, _ := cmd.Flags().GetInt("month-offset")
-		dayOffset, _ := cmd.Flags().GetInt("day-offset")
-
 		dir := viper.GetString("journalPath")
 		editor := viper.GetString("editor")
 
-		day := time.Now().AddDate(0, monthOffset, dayOffset)
-		filename := notes.DayFilename(dir, day)
+		var filename string
+
+		if len(args) == 1 {
+			filename = notes.ArchiveFilename(dir, args[0])
+			if err := notes.EnsureArchiveDir(dir); err != nil {
+				return err
+			}
+		} else {
+			monthOffset, _ := cmd.Flags().GetInt("month-offset")
+			dayOffset, _ := cmd.Flags().GetInt("day-offset")
+
+			day := time.Now().AddDate(0, monthOffset, dayOffset)
+			filename = notes.DayFilename(dir, day)
+		}
+
 		err := notes.EditNote(editor, filename)
 		if err != nil {
 			return err
