@@ -46,4 +46,7 @@ func initConfig() {
 func defaults() {
 	viper.SetDefault("journalDir", os.ExpandEnv("$HOME/.journal"))
 	viper.SetDefault("editor", os.ExpandEnv("$EDITOR"))
+
+	viper.BindEnv("editor")
+	viper.BindEnv("journalDir", "JOURNAL_PATH")
 }
