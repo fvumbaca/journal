@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/fvumbaca/journal/pkg/notes"
-	"github.com/fvumbaca/journal/pkg/search"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -45,7 +44,7 @@ var memoCMD = &cobra.Command{
 			return err
 		}
 
-		return search.IndexFile(dir, filename)
+		return notes.IndexFile(dir, filename)
 	},
 }
 

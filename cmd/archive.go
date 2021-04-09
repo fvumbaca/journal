@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/fvumbaca/journal/pkg/notes"
 	"github.com/spf13/cobra"
@@ -21,13 +22,19 @@ var archivesCMD = &cobra.Command{
 			return err
 		}
 
-		filenames, err := notes.ListArchiveFiles(dir)
+		notes, err := notes.ListArchiveFiles(dir)
 		if err != nil {
 			return err
 		}
 
-		for _, filename := range filenames {
-			fmt.Println(filename)
+		if showAbsolute, _ := cmd.Flags().GetBool("absolute-path"); showAbsolute {
+			for _, note := range notes {
+				fmt.Println(filepath.Join(note.DIR, note.Name))
+			}
+		} else {
+			for _, note := range notes {
+				fmt.Println(note.Name)
+			}
 		}
 
 		return nil
@@ -36,4 +43,6 @@ var archivesCMD = &cobra.Command{
 
 func init() {
 	rootCMD.AddCommand(archivesCMD)
+
+	archivesCMD.Flags().BoolP("absolute-path", "a", false, "Show full absolute paths.")
 }

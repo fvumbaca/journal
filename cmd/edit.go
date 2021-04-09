@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/fvumbaca/journal/pkg/notes"
-	"github.com/fvumbaca/journal/pkg/search"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -22,7 +21,7 @@ var editCMD = &cobra.Command{
 		var filename string
 
 		if len(args) == 1 {
-			filename = notes.ArchiveFilename(dir, args[0])
+			filename = notes.ArchivePath(dir, args[0])
 			if err := notes.EnsureArchiveDir(dir); err != nil {
 				return err
 			}
@@ -38,7 +37,7 @@ var editCMD = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		return search.IndexFile(dir, filename)
+		return notes.IndexFile(dir, filename)
 	},
 }
 

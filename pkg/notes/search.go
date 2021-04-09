@@ -1,4 +1,4 @@
-package search
+package notes
 
 import (
 	"fmt"
@@ -11,11 +11,6 @@ import (
 
 	"github.com/blevesearch/bleve"
 )
-
-type fileInfo struct {
-	Filename string
-	Content  string
-}
 
 const bleveIndexFilename = ".index"
 
@@ -84,7 +79,10 @@ func _indexFile(index bleve.Index, filename string) error {
 	}
 
 	// TODO: Concurrency?
-	return index.Index(filename, &fileInfo{
+	return index.Index(filename, &struct {
+		Filename string
+		Content  string
+	}{
 		Filename: filename,
 		Content:  string(contents),
 	})

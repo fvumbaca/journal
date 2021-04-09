@@ -8,30 +8,33 @@ import (
 
 const archivesRelPath = "archives"
 
-// ArchiveFilename builds an absolute path to an archive file.
-func ArchiveFilename(baseDir, archiveName string) string {
-	return filepath.Join(baseDir, archivesRelPath, archiveName)
+// ArchivePath builds an absolute path to a file in the archive directory.
+func ArchivePath(baseDir string, archiveName ...string) string {
+	parts := []string{baseDir, archivesRelPath}
+	parts = append(parts, archiveName...)
+	return filepath.Join(parts...)
 }
 
-// Ensures that the archives directory exists
+// Ensures that the archives directory exists.
 func EnsureArchiveDir(baseDir string) error {
 	return os.MkdirAll(filepath.Join(baseDir, archivesRelPath), 0775)
 }
 
 // ListArchiveFiles will create a list of archives
-func ListArchiveFiles(baseDir string) ([]string, error) {
-	var filenames []string
+func ListArchiveFiles(baseDir string) ([]Note, error) {
+	var notes []Note
 
-	err := filepath.WalkDir(baseDir, func(path string, d fs.DirEntry, err error) error {
-		if path == path {
+	archivesPath := ArchivePath(baseDir)
+	err := filepath.WalkDir(archivesPath, func(path string, d fs.DirEntry, err error) error {
+		if d == nil || d.IsDir() {
 			return nil
 		}
 
-		if d.IsDir() {
-			return nil
-		}
-
-		filenames = append(filenames, path)
+		relPath, _ := filepath.Rel(archivesPath, path)
+		notes = append(notes, Note{
+			DIR:  archivesPath,
+			Name: relPath,
+		})
 		return nil
 	})
 
@@ -39,5 +42,5 @@ func ListArchiveFiles(baseDir string) ([]string, error) {
 		return nil, err
 	}
 
-	return filenames, nil
+	return notes, nil
 }

@@ -4,7 +4,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/fvumbaca/journal/pkg/search"
+	"github.com/fvumbaca/journal/pkg/notes"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -18,7 +18,7 @@ var searchCMD = &cobra.Command{
 		resultsCount, _ := cmd.Flags().GetInt("results")
 		dir := viper.GetString("journalPath")
 
-		return search.Search(dir, strings.Join(args, " "), resultsCount, os.Stdout)
+		return notes.Search(dir, strings.Join(args, " "), resultsCount, os.Stdout)
 	},
 }
 

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/fvumbaca/journal/pkg/search"
+	"github.com/fvumbaca/journal/pkg/notes"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -17,7 +17,7 @@ the user wants to trigger it manually.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		dir := viper.GetString("journalPath")
 		fmt.Println("Indexing files in ", dir)
-		return search.IndexDir(dir)
+		return notes.IndexDir(dir)
 	},
 }
 

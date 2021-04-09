@@ -24,7 +24,7 @@ var viewCMD = &cobra.Command{
 		var filename string
 
 		if len(args) == 1 {
-			filename = notes.ArchiveFilename(dir, args[0])
+			filename = notes.ArchivePath(dir, args[0])
 		} else {
 			day := time.Now().AddDate(0, monthOffset, dayOffset)
 			filename = notes.DayFilename(dir, day)
