@@ -36,7 +36,4 @@ var archivesCMD = &cobra.Command{
 
 func init() {
 	rootCMD.AddCommand(archivesCMD)
-
-	archivesCMD.Flags().StringP("journal-path", "D", "", "Directory journal entries are stored in.")
-	viper.BindPFlag("journalPath", archivesCMD.Flags().Lookup("journal-path"))
 }

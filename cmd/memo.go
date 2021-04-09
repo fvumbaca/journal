@@ -54,7 +54,4 @@ func init() {
 
 	memoCMD.Flags().IntP("day-offset", "o", 0, "Offset in days for note to load. Can be negative and stacked with other offsets.")
 	memoCMD.Flags().IntP("month-offset", "m", 0, "Offset in months for note to load. Can be negative and stacked with other offsets.")
-
-	memoCMD.Flags().StringP("journal-path", "D", "", "Directory journal entries are stored in.")
-	viper.BindPFlag("journalPath", memoCMD.Flags().Lookup("journal-path"))
 }

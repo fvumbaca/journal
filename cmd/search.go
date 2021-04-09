@@ -26,7 +26,4 @@ func init() {
 	rootCMD.AddCommand(searchCMD)
 
 	searchCMD.Flags().IntP("results", "r", 5, "Number of results to display.")
-
-	searchCMD.Flags().StringP("journal-path", "D", "", "Directory journal entries are stored in.")
-	viper.BindPFlag("journalPath", searchCMD.Flags().Lookup("journal-path"))
 }

@@ -48,8 +48,6 @@ func init() {
 	editCMD.Flags().IntP("day-offset", "o", 0, "Offset in days for note to load. Can be negative and stacked with other offsets.")
 	editCMD.Flags().IntP("month-offset", "m", 0, "Offset in months for note to load. Can be negative and stacked with other offsets.")
 
-	editCMD.Flags().StringP("journal-path", "D", "", "Directory journal entries are stored in.")
-	viper.BindPFlag("journalPath", editCMD.Flags().Lookup("journal-path"))
 	editCMD.Flags().StringP("editor", "e", "", "Editor to use for notes.")
 	viper.BindPFlag("editor", editCMD.Flags().Lookup("editor"))
 }

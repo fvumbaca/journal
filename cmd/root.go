@@ -16,6 +16,10 @@ func Execute() {
 }
 
 func init() {
+
+	rootCMD.PersistentFlags().StringP("journal-path", "D", "", "Directory journal entries are stored in.")
+	viper.BindPFlag("journalPath", rootCMD.PersistentFlags().Lookup("journal-path"))
+
 	cobra.OnInitialize(initConfig)
 }
 

@@ -50,7 +50,4 @@ func init() {
 
 	viewCMD.Flags().IntP("day-offset", "o", 0, "Offset in days for note to load. Can be negative and stacked with other offsets.")
 	viewCMD.Flags().IntP("month-offset", "m", 0, "Offset in months for note to load. Can be negative and stacked with other offsets.")
-
-	viewCMD.Flags().StringP("journal-path", "D", "", "Directory journal entries are stored in.")
-	viper.BindPFlag("journalPath", viewCMD.Flags().Lookup("journal-path"))
 }

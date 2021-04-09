@@ -38,7 +38,7 @@ func IndexDir(baseDir string) error {
 	defer index.Close()
 
 	err = filepath.WalkDir(baseDir, func(path string, d fs.DirEntry, err error) error {
-		if d.IsDir() {
+		if d == nil || d.IsDir() {
 			return nil
 		}
 
