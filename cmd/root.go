@@ -26,7 +26,8 @@ func init() {
 var rootCMD = &cobra.Command{
 	Use:   "journal",
 	Short: "A CLI Journal",
-	Long:  `Journal is a fully featured journal for keeping daily and archival notes, all from your terminal.`,
+	Long: `Journal is an oppinionated journaling utility for keeping daily
+and archival notes - all from your terminal.`,
 }
 
 func initConfig() {
