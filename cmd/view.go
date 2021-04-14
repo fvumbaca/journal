@@ -18,7 +18,7 @@ var viewCMD = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		monthOffset, _ := cmd.Flags().GetInt("month-offset")
 		dayOffset, _ := cmd.Flags().GetInt("day-offset")
-		dir, _ := cmd.PersistentFlags().GetString("journal-path")
+		dir, _ := cmd.Flags().GetString("journal-path")
 
 		var filename string
 

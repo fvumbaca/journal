@@ -15,7 +15,7 @@ var searchCMD = &cobra.Command{
 	Aliases: []string{"s"},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		resultsCount, _ := cmd.Flags().GetInt("results")
-		dir, _ := cmd.PersistentFlags().GetString("journal-path")
+		dir, _ := cmd.Flags().GetString("journal-path")
 
 		return notes.Search(dir, strings.Join(args, " "), resultsCount, os.Stdout)
 	},

@@ -14,7 +14,7 @@ var infoCMD = &cobra.Command{
 taking consistency or get a birds eye-view on current configuration settings.`,
 	Args: cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		dir, _ := cmd.PersistentFlags().GetString("journal-path")
+		dir, _ := cmd.Flags().GetString("journal-path")
 
 		s, err := notes.NoteStats(dir)
 		if err != nil {

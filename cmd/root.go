@@ -22,7 +22,13 @@ and archival notes - all from your terminal.`,
 }
 
 func init() {
-
 	rootCMD.PersistentFlags().StringP("journal-path", "D", os.ExpandEnv("$HOME/.journal"), "Directory journal entries are stored in.")
+
+	defaultEditor := os.Getenv("EDITOR")
+	if defaultEditor == "" {
+		defaultEditor = "open"
+	}
+
+	rootCMD.PersistentFlags().StringP("editor", "e", defaultEditor, "Editor command to use for editing pages.")
 
 }

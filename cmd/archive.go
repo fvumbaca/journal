@@ -14,7 +14,7 @@ var archivesCMD = &cobra.Command{
 	Long:  "List archive files.",
 	Args:  cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		dir, _ := cmd.PersistentFlags().GetString("journal-path")
+		dir, _ := cmd.Flags().GetString("journal-path")
 
 		err := notes.EnsureArchiveDir(dir)
 		if err != nil {
