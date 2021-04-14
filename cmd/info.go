@@ -5,17 +5,16 @@ import (
 
 	"github.com/fvumbaca/journal/pkg/notes"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var infoCMD = &cobra.Command{
 	Use:   "info",
 	Short: "Show info/stats about your journal.",
 	Long: `Show info/stats about your journal. Review your writing and note
-taking consistancy or get a birds eye-view on current configuration settings.`,
+taking consistency or get a birds eye-view on current configuration settings.`,
 	Args: cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		dir := viper.GetString("journalPath")
+		dir, _ := cmd.PersistentFlags().GetString("journal-path")
 
 		s, err := notes.NoteStats(dir)
 		if err != nil {
@@ -28,7 +27,7 @@ taking consistancy or get a birds eye-view on current configuration settings.`,
 		if showVerboseInfo {
 			fmt.Println("Client Version:", version)
 			fmt.Println("Journal Path:", dir)
-			editor := viper.GetString("editor")
+			editor, _ := cmd.Flags().GetString("editor")
 			fmt.Println("Editor Command:", editor)
 		}
 

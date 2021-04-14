@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 func Execute() {
@@ -15,14 +14,6 @@ func Execute() {
 	}
 }
 
-func init() {
-
-	rootCMD.PersistentFlags().StringP("journal-path", "D", "", "Directory journal entries are stored in.")
-	viper.BindPFlag("journalPath", rootCMD.PersistentFlags().Lookup("journal-path"))
-
-	cobra.OnInitialize(initConfig)
-}
-
 var rootCMD = &cobra.Command{
 	Use:   "journal",
 	Short: "A CLI Journal",
@@ -30,24 +21,8 @@ var rootCMD = &cobra.Command{
 and archival notes - all from your terminal.`,
 }
 
-func initConfig() {
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
+func init() {
 
-	viper.AddConfigPath("$HOME/.config/journal")
-	viper.AddConfigPath("$HOME/.journalrc")
+	rootCMD.PersistentFlags().StringP("journal-path", "D", os.ExpandEnv("$HOME/.journal"), "Directory journal entries are stored in.")
 
-	defaults()
-
-	if err := viper.ReadInConfig(); err != nil {
-		fmt.Println("config err:", err)
-	}
-}
-
-func defaults() {
-	viper.SetDefault("journalDir", os.ExpandEnv("$HOME/.journal"))
-	viper.SetDefault("editor", os.ExpandEnv("$EDITOR"))
-
-	viper.BindEnv("editor")
-	viper.BindEnv("journalDir", "JOURNAL_PATH")
 }

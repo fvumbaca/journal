@@ -7,7 +7,6 @@ import (
 
 	"github.com/fvumbaca/journal/pkg/notes"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var viewCMD = &cobra.Command{
@@ -19,7 +18,7 @@ var viewCMD = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		monthOffset, _ := cmd.Flags().GetInt("month-offset")
 		dayOffset, _ := cmd.Flags().GetInt("day-offset")
-		dir := viper.GetString("journalPath")
+		dir, _ := cmd.PersistentFlags().GetString("journal-path")
 
 		var filename string
 

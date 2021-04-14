@@ -5,7 +5,6 @@ import (
 
 	"github.com/fvumbaca/journal/pkg/notes"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var editCMD = &cobra.Command{
@@ -15,8 +14,8 @@ var editCMD = &cobra.Command{
 	Aliases: []string{"e"},
 	Args:    cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		dir := viper.GetString("journalPath")
-		editor := viper.GetString("editor")
+		dir, _ := cmd.PersistentFlags().GetString("journal-path")
+		editor, _ := cmd.Flags().GetString("editor")
 
 		var filename string
 
@@ -48,5 +47,4 @@ func init() {
 	editCMD.Flags().IntP("month-offset", "m", 0, "Offset in months for note to load. Can be negative and stacked with other offsets.")
 
 	editCMD.Flags().StringP("editor", "e", "", "Editor to use for notes.")
-	viper.BindPFlag("editor", editCMD.Flags().Lookup("editor"))
 }

@@ -6,7 +6,6 @@ import (
 
 	"github.com/fvumbaca/journal/pkg/notes"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var archivesCMD = &cobra.Command{
@@ -15,7 +14,7 @@ var archivesCMD = &cobra.Command{
 	Long:  "List archive files.",
 	Args:  cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		dir := viper.GetString("journalPath")
+		dir, _ := cmd.PersistentFlags().GetString("journal-path")
 
 		err := notes.EnsureArchiveDir(dir)
 		if err != nil {
