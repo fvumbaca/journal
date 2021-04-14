@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Document</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="static/normalize.css">
+    <link rel="stylesheet" href="static/skeleton.css">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+    {{ if (ne .Query "") }}
+    {{ template "results" . }}
+    {{ else }}
+    {{ template "landing" }}
+    {{ end }}
+</body>
+
+</html>
+
+{{ define "landing" }}
+<div class="section hero">
+    <div clas="container">
+        <div class="offset-by-three one-half column">
+            <div class="hero-heading">
+                <h1 style="width: auto; text-align: center;">Journal <small>CLI</small></h1>
+            </div>
+            <form>
+                <input class="u-full-width" type="test" placeholder="Search your notes" name="q" />
+                <input type="submit" style="display: none" />
+            </form>
+        </div>
+    </div>
+</div>
+{{ end }}
+
+{{ define "results" }}
+<div>
+
+
+    <div class="container">
+        <div class="row">
+            <nav style="padding: 16px">
+                <h4 style="width:fit-content; float: left">Journal <small style="width: fit-content;">CLI</small></h4>
+
+                <form style="float: right;">
+                    <input type="test" placeholder="Search your notes" name="q" value="{{ .Query }}" />
+                    <input type="submit" style="display: none" />
+                </form>
+            </nav>
+        </div>
+
+        <div class="row">
+            <h2 style="align-content: center;">Results</h2>
+        </div>
+
+        <div class="row">
+
+            {{ with .ResultContent }}
+            {{ . }}
+            {{ else }}
+            <p>No results :(</p>
+            {{ end }}
+
+        </div>
+    </div>
+</div>
+
+{{ end }}
