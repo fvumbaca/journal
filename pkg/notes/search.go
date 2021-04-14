@@ -17,6 +17,13 @@ const bleveIndexFilename = ".index"
 // IndexDir will add/update an index for a folder.
 func IndexDir(baseDir string) error {
 	indexFilename := filepath.Join(baseDir, bleveIndexFilename)
+
+	fmt.Println("Deleting old index...")
+	err := os.RemoveAll(indexFilename)
+	if err != nil {
+		return err
+	}
+
 	index, err := bleve.Open(indexFilename)
 
 	if err == bleve.ErrorIndexPathDoesNotExist {
@@ -41,10 +48,13 @@ func IndexDir(baseDir string) error {
 		if strings.HasPrefix(path, indexFilename) {
 			return nil
 		}
+		if strings.HasPrefix(path, ".debris") {
+			return nil
+		}
 
 		fmt.Println("indexing", path)
 
-		return _indexFile(index, path)
+		return _indexFile(index, baseDir, path)
 	})
 
 	if err != nil {
@@ -69,17 +79,22 @@ func IndexFile(baseDir string, filename string) error {
 		return err
 	}
 	defer index.Close()
-	return _indexFile(index, filename)
+	return _indexFile(index, baseDir, filename)
 }
 
-func _indexFile(index bleve.Index, filename string) error {
+func _indexFile(index bleve.Index, baseDir, filename string) error {
 	contents, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return err
 	}
 
+	relativeFilename, err := filepath.Rel(baseDir, filename)
+	if err != nil {
+		return err
+	}
+
 	// TODO: Concurrency?
-	return index.Index(filename, &struct {
+	return index.Index(relativeFilename, &struct {
 		Filename string
 		Content  string
 	}{
@@ -110,7 +125,7 @@ func Search(baseDir string, query string, numResults int, out io.Writer) error {
 	}
 
 	for _, result := range searchResults.Hits[:maxResults] {
-		filename := result.ID
+		filename := filepath.Join(baseDir, result.ID)
 		f, err := os.Open(filename)
 		if err != nil {
 			return err
